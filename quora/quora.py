@@ -156,10 +156,10 @@ class Quora:
     Scrapes the soup object to get details of a question.
     """
     try:
-      raw_topics = soup.find_all('span', attrs={'itemprop' : 'title'})
+      raw_topics = soup.find_all('div', attrs={'class' : 'TopicListItem'})
       topics = []
       for topic in raw_topics:
-        topics.append(topic.string)
+        topics.extend(text for text in topic.findAll(text=True, recursive=True) if text.strip() != "")
 
       answer_count = soup.find('div', attrs={'class' : 'answer_count'}).next.split()[0]
       question_text = list(soup.find('div', attrs = {'class' : 'question_text_edit'}).find('h1').children)[-1]
